@@ -1,9 +1,14 @@
 package alexsander.com.br.friendsintown;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -23,8 +28,12 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private static String TAG = "MainActivity";
 
-    private LoginButton fbLoginButton;
     private CallbackManager fbCallbackManager;
+    private EditText etEmail;
+    private EditText etPassword;
+    private Button btnLogin;
+    private Button btnSignUp;
+    private LoginButton fbLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         checkUserLoggedWithFacebook();
+        initViews();
 
         fbCallbackManager = CallbackManager.Factory.create();
 
-        fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         fbLoginButton.setReadPermissions("public_profile", "email", "user_friends");
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
@@ -81,6 +90,20 @@ public class MainActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login(etEmail.getText().toString(), etPassword.getText().toString());
+            }
+        });
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+            }
+        });
     }
 
     @Override
@@ -89,10 +112,60 @@ public class MainActivity extends AppCompatActivity {
         fbCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void checkUserLoggedWithFacebook() {
+    private void initViews() {
+        etEmail = (EditText) findViewById(R.id.input_email);
+        etPassword = (EditText) findViewById(R.id.input_password);
+        btnLogin = (Button) findViewById(R.id.btn_login);
+        btnSignUp = (Button) findViewById(R.id.btn_signup);
+        fbLoginButton = (LoginButton) findViewById(R.id.login_button);
+    }
+    private void checkUserLoggedWithFacebook() {
         if (AccessToken.getCurrentAccessToken() != null) {
             Log.d(TAG, AccessToken.getCurrentAccessToken().getToken());
             // start another activity
         }
+    }
+
+    private void login(String email, String password) {
+        if (!validate()) {
+            return;
+        }
+
+        btnLogin.setEnabled(false);
+
+        ProgressDialog progress = new ProgressDialog(this, R.style.AppTheme);
+        progress.setMessage("Logging...");
+        progress.show();
+
+        // login no backend
+
+        finish();
+        //startActivity(new Intent(this, NextActivity.class));
+    }
+
+    private boolean validate() {
+        boolean valid = true;
+
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        Log.d(TAG, email);
+        Log.d(TAG, password);
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Entre com um email válido");
+            valid = false;
+        } else {
+            etEmail.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 6 || password.length() > 20) {
+            etPassword.setError("A senha deve ter entre 6 e 20 caracteres");
+            valid = false;
+        } else {
+            etPassword.setError(null);
+        }
+
+        return valid;
     }
 }
