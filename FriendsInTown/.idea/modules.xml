@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Desktop/Friends in Town/Android App/Android-app/FriendsInTown/FriendsInTown.iml" filepath="$USER_HOME$/Desktop/Friends in Town/Android App/Android-app/FriendsInTown/FriendsInTown.iml" />
-      <module fileurl="file://$USER_HOME$/Desktop/Friends in Town/Android App/Android-app/FriendsInTown/app/app.iml" filepath="$USER_HOME$/Desktop/Friends in Town/Android App/Android-app/FriendsInTown/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FriendsInTown.iml" filepath="$PROJECT_DIR$/FriendsInTown.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
