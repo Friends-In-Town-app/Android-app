@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     public void onClick(View v) {
         if (v == createAccountButton){
             startActivity(new Intent(MainActivity.this, CreateAccountActivity.class));
-
         }
 }
 
