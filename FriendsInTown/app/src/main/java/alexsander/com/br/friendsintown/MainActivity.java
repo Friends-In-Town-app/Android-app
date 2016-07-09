@@ -2,6 +2,8 @@ package alexsander.com.br.friendsintown;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkUserLoggedWithEmailAndPassword();
         checkUserLoggedWithFacebook();
         initViews();
 
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         Log.d(TAG, response.getJSONObject().toString());
+                        startActivity(new Intent(MainActivity.this, ChooseLocationActivity.class));
                     }
                 }).executeAsync();
 
@@ -131,15 +135,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        btnLogin.setEnabled(false);
+        //btnLogin.setEnabled(false);
 
-        ProgressDialog progress = new ProgressDialog(this, R.style.AppTheme);
-        progress.setMessage("Logging...");
-        progress.show();
+        //ProgressDialog progress = new ProgressDialog(this, R.style.AppTheme);
+        //progress.setMessage("Logging...");
+        //progress.show();
 
-        // login no backend
-
-        finish();
+        LoginAsyncTask task = new LoginAsyncTask();
+        task.execute(email, password);
+        //finish();
         //startActivity(new Intent(this, NextActivity.class));
     }
 
@@ -167,5 +171,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private void checkUserLoggedWithEmailAndPassword() {
+        SharedPreferences pref = this.getPreferences(MODE_PRIVATE);
+        String token = pref.getString("token", "");
+        if (!token.isEmpty()) {
+            Log.d("token", token);
+            startActivity(new Intent(this, ChooseLocationActivity.class));
+        }
+    }
+
+    private class LoginAsyncTask extends AsyncTask<String, Void, Boolean> {
+        //ProgressDialog progress = new ProgressDialog(MainActivity.this, R.style.AppTheme);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d("AsyncTaskLogin", "onPreExecute()");
+            //progress.setMessage("Logging...");
+            //progress.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Log.d("AsyncTaskLogin", "doInBackground()");
+            return UserService.userLogin(MainActivity.this, params[0], params[1]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            Log.d("AsyncTaskLogin", "onPostExecute()");
+            //progress.dismiss();
+            if (success) {
+                Toast.makeText(MainActivity.this, "Logged successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, ChooseLocationActivity.class));
+            } else {
+                Toast.makeText(MainActivity.this, "Error logging!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

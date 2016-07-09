@@ -1,6 +1,7 @@
 package alexsander.com.br.friendsintown;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SignUpActivity extends AppCompatActivity {
     private static String TAG = "SignUpActivity";
@@ -79,11 +81,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         btnSignUp.setEnabled(false);
 
-        ProgressDialog progress = new ProgressDialog(this, R.style.AppTheme);
-        progress.setMessage("Creating your account...");
-        progress.show();
+        //progress = new ProgressDialog(this, R.style.AppTheme);
+        //progress.setMessage("Creating your account...");
+        //progress.show();
 
         // cadastrar com backend
+        RegisterAsyncTask task = new RegisterAsyncTask();
+        task.execute(name, email, password);
+
         finish();
+    }
+
+    private class RegisterAsyncTask extends AsyncTask<String, Void, Boolean> {
+
+        //ProgressDialog progress = new ProgressDialog(SignUpActivity.this, R.style.AppTheme);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progress.setMessage("Creating your account...");
+            //progress.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            return UserService.registerUser(params[0], params[1], params[2]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            //progress.dismiss();
+            if (success) {
+                finish();
+            } else {
+                Toast.makeText(SignUpActivity.this, "Email já existe!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

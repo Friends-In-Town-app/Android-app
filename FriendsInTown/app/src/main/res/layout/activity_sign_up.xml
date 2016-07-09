@@ -81,7 +81,7 @@
                     android:id="@+id/input_confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:hint="Confirm Password"/>
