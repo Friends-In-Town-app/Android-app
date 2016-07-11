@@ -1,8 +1,11 @@
 package alexsander.com.br.friendsintown;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,17 +25,18 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
 
 public class ChooseLocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private EditText etNameOfTheCity;
     private Button btnGetLocation;
-    private Location mLastLocation;
 
     private GoogleApiClient mGoogleApiClient;
 
     private float majorLikelihood = 0;
     private Place userPlace;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,12 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
         setContentView(R.layout.activity_choose_location);
 
         initViews();
+
+        SharedPreferences pref = this.getPreferences(MODE_PRIVATE);
+        token = pref.getString("token", "");
+        if (!token.isEmpty()) {
+            Log.d("token", token);
+        }
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -55,6 +65,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
             @Override
             public void onClick(View v) {
                 getLocation();
+
             }
         });
     }
@@ -96,9 +107,19 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
                     }
                 }
                 placeLikelihoods.release();
-
+                SendLocationDataTask task = new SendLocationDataTask();
+                task.execute(userPlace.getLatLng());
             }
         });
+    }
+
+    private class SendLocationDataTask extends AsyncTask<LatLng, Void, Void> {
+
+        @Override
+        protected Void doInBackground(LatLng... latLngs) {
+            UserService.sendUserLocation(token, latLngs[0], "", "");
+            return null;
+        }
     }
 
     @Override

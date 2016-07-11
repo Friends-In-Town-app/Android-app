@@ -3,4 +3,7 @@
     <string name="facebook_app_id">291979681134911</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

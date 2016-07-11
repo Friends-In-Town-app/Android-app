@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +23,9 @@ public class UserService {
 
     private static final String
             URL_LOGIN_USER = "http://64.137.233.224:3000/loginemail/";
+
+    private static final String
+            URL_SEND_LOCATION_USER = "http://64.137.233.224:3000/location/";
 
     public static boolean registerUser(String name, String email, String password) {
         if (!checkUserExists(email)) {
@@ -86,5 +90,15 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public static boolean sendUserLocation(String token, LatLng latLng, String town, String country) {
+        HttpRequest request = HttpRequest.post(URL_SEND_LOCATION_USER + token + "/" + latLng.latitude +
+                                                "/" + latLng.longitude + "/" + town + "/" + country);
+        if (request.code() == 200) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

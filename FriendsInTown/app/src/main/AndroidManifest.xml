@@ -3,7 +3,7 @@
     package="alexsander.com.br.friendsintown">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".FriendsInTownApplication"
@@ -15,10 +15,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBUr_4Jt9xboOD8tH7oAukN1jiLV9gtmWw"/>
+            android:value="AIzaSyBUr_4Jt9xboOD8tH7oAukN1jiLV9gtmWw" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -28,7 +27,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".ChooseLocationActivity"></activity>
+        <activity android:name=".ChooseLocationActivity" />
+        <activity android:name=".FriendsInTownActivity"></activity>
     </application>
 
 </manifest>
