@@ -3,13 +3,18 @@ package alexsander.com.br.friendsintown;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.util.Log;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by alex1_000 on 30/06/2016.
@@ -26,6 +31,8 @@ public class UserService {
 
     private static final String
             URL_SEND_LOCATION_USER = "http://64.137.233.224:3000/location/";
+    private static final String
+            URL_LIST_FRIENDS = "http://64.137.233.224:3000/listfriends/";
 
     public static boolean registerUser(String name, String email, String password) {
         if (!checkUserExists(email)) {
@@ -100,5 +107,34 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public static List<Friend> getListFriends(String token, LatLng userLocation) {
+        List<Friend> friendsList = new ArrayList<>();
+        HttpRequest request = HttpRequest.get(URL_LIST_FRIENDS + token);
+        if (request.code() == 200) {
+            try {
+                JSONObject root = new JSONObject(request.body());
+                JSONArray friends = root.getJSONArray("friends");
+                for (int i = 0; i < friends.length(); i++) {
+                    float[] distance = new float[1];
+                    JSONObject friendObject = friends.getJSONObject(i);
+                    String name = friendObject.getString("n");
+                    String location = friendObject.getString("city") + ", " + friendObject.getString("ct");
+                    LatLng friendLatLng = new LatLng(friendObject.getJSONArray("pos").getDouble(0),
+                                                    friendObject.getJSONArray("pos").getDouble(1));
+
+                    if (userLocation != null) {
+                        Location.distanceBetween(userLocation.latitude, userLocation.longitude, friendLatLng.latitude, friendLatLng.longitude, distance);
+                    }
+                    Friend friend = new Friend(name, location, distance[0]);
+                    friendsList.add(friend);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return friendsList;
     }
 }
