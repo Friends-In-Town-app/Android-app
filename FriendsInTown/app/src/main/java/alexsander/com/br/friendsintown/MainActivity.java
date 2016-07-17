@@ -174,8 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkUserLoggedWithEmailAndPassword() {
-        SharedPreferences pref = this.getPreferences(MODE_PRIVATE);
-        String token = pref.getString("token", "");
+        String token = UserService.getToken(this);
         if (!token.isEmpty()) {
             Log.d("token", token);
             startActivity(new Intent(this, ChooseLocationActivity.class));

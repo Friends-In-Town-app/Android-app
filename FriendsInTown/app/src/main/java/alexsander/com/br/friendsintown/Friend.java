@@ -4,14 +4,35 @@ package alexsander.com.br.friendsintown;
  * Created by 212571132 on 7/14/16.
  */
 public class Friend {
+    private String id;
+    private String friendRequestID;
     private String name;
     private String location;
     private float distance;
 
-    public Friend(String name, String location, float distance) {
+    public Friend(String id, String name, String location, float distance) {
+        this.id = id;
         this.name = name;
         this.location = location;
         this.distance = distance;
+    }
+
+    public Friend(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFriendRequestID() {
+        return friendRequestID;
+    }
+
+    public void setFriendRequestID(String friendRequestID) {
+        this.friendRequestID = friendRequestID;
     }
 
     public String getName() {

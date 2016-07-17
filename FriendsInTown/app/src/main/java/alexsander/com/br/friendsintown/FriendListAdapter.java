@@ -14,10 +14,13 @@ import java.util.List;
 public class FriendListAdapter extends RecyclerView.Adapter<FriendViewHolder>{
     private List<Friend> friends;
     private Context context;
+    private OnFriendClickListener onFriendClickListener;
 
-    public FriendListAdapter(List<Friend> friends, Context context) {
+
+    public FriendListAdapter(List<Friend> friends, Context context, OnFriendClickListener onFriendClickListener) {
         this.friends = friends;
         this.context = context;
+        this.onFriendClickListener = onFriendClickListener;
     }
 
     @Override
@@ -28,16 +31,35 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(FriendViewHolder holder, int position) {
+    public void onBindViewHolder(final FriendViewHolder holder, final int position) {
         Friend friend = friends.get(position);
 
         holder.tvFriendName.setText(friend.getName());
-        holder.tvFriendLocation.setText(friend.getLocation());
-        holder.tvFriendDistance.setText(friend.getDistance() + "m");
+        if (friend.getLocation() != "") {
+            holder.tvFriendLocation.setText(friend.getLocation());
+        }
+        if (friend.getDistance() > 0) {
+            holder.tvFriendDistance.setText(friend.getDistance() + "m");
+        }
+
+        if (onFriendClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onFriendClickListener.onFriendClick(holder.itemView, position);
+                }
+            });
+
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return friends != null ? friends.size() : 0;
+    }
+
+    public interface OnFriendClickListener {
+        void onFriendClick(View view, int idx);
     }
 }

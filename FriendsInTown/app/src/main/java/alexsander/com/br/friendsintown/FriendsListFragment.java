@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class FriendsListFragment extends Fragment {
 
-    private List<Friend> friends;
     private LatLng userLocation;
     private FriendListAdapter adapter;
     private RecyclerView recyclerView;
@@ -31,6 +30,8 @@ public class FriendsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friends_list, container, false);
+
+        token = UserService.getToken(getContext());
 
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_friends);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -54,7 +55,7 @@ public class FriendsListFragment extends Fragment {
         protected void onPostExecute(List<Friend> friends) {
             super.onPostExecute(friends);
             if (friends != null) {
-                adapter = new FriendListAdapter(friends, getContext());
+                adapter = new FriendListAdapter(friends, getContext(), null);
                 recyclerView.setAdapter(adapter);
             }
         }

@@ -64,8 +64,8 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
         btnGetLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLocation();
-
+                //getLocation();
+                startActivity(new Intent(ChooseLocationActivity.this, FriendsInTownActivity.class));
             }
         });
     }
@@ -88,14 +88,14 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
     }
 
     private void getLocation() {
-        //mGoogleApiClient.connect();
-        /*mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        /*mGoogleApiClient.connect();
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             Log.d("Latitude", String.valueOf(mLastLocation.getLatitude()));
             Log.d("Longitude", String.valueOf(mLastLocation.getLongitude()));
         }*/
 
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
+        /*PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
             public void onResult(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
@@ -110,7 +110,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
                 SendLocationDataTask task = new SendLocationDataTask();
                 task.execute(userPlace.getLatLng());
             }
-        });
+        });*/
     }
 
     private class SendLocationDataTask extends AsyncTask<LatLng, Void, Void> {

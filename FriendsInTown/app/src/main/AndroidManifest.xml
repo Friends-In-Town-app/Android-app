@@ -28,7 +28,32 @@
         </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ChooseLocationActivity" />
-        <activity android:name=".FriendsInTownActivity"></activity>
+        <activity android:name=".FriendsInTownActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ChooseLocationActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="alexsander.com.br.friendsintown.SearchFriendsActivity" />
+        </activity>
+        <activity
+            android:name=".FriendsRequestActivity"
+            android:label="@string/title_activity_friends_request"
+            android:parentActivityName=".FriendsInTownActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="alexsander.com.br.friendsintown.FriendsInTownActivity" />
+        </activity>
+        <activity android:name=".SearchFriendsActivity"
+            android:parentActivityName=".FriendsInTownActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>
