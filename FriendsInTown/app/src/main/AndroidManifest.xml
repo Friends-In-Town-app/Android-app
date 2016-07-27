@@ -2,12 +2,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="alexsander.com.br.friendsintown">
 
+<<<<<<< HEAD
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
+        android:name=".FriendsInTownApplication"
+=======
+    <application
+>>>>>>> origin/master
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
+        <service android:name=".LocationIntentService"
+            android:exported="false"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCQmRjDPtZk2j5-sl36vMa2FHe5rLXeqUY" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+=======
+>>>>>>> origin/master
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,7 +39,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ChooseLocationActivity" />
+        <activity android:name=".FriendsInTownActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ChooseLocationActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="alexsander.com.br.friendsintown.SearchFriendsActivity" />
+        </activity>
+        <activity
+            android:name=".FriendsRequestActivity"
+            android:label="@string/title_activity_friends_request"
+            android:parentActivityName=".FriendsInTownActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="alexsander.com.br.friendsintown.FriendsInTownActivity" />
+        </activity>
+        <activity android:name=".SearchFriendsActivity"
+            android:parentActivityName=".FriendsInTownActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+=======
         <activity android:name=".CreateAccountActivity" />
+>>>>>>> origin/master
     </application>
 
 </manifest>
