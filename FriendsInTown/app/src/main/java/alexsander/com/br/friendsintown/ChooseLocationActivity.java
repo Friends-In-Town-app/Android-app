@@ -27,15 +27,10 @@ import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 
-public class ChooseLocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ChooseLocationActivity extends AppCompatActivity {
 
-    private EditText etNameOfTheCity;
     private Button btnGetLocation;
 
-    private GoogleApiClient mGoogleApiClient;
-
-    private float majorLikelihood = 0;
-    private Place userPlace;
     private String token;
 
     @Override
@@ -51,16 +46,6 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
             Log.d("token", token);
         }
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .build();
-        }
-
         btnGetLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,80 +55,8 @@ public class ChooseLocationActivity extends AppCompatActivity implements GoogleA
         });
     }
 
-    @Override
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
     private void initViews() {
-        etNameOfTheCity = (EditText) findViewById(R.id.input_name_of_the_city);
         btnGetLocation = (Button) findViewById(R.id.btn_get_location);
     }
 
-    private void getLocation() {
-        /*mGoogleApiClient.connect();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            Log.d("Latitude", String.valueOf(mLastLocation.getLatitude()));
-            Log.d("Longitude", String.valueOf(mLastLocation.getLongitude()));
-        }*/
-
-        /*PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(@NonNull PlaceLikelihoodBuffer placeLikelihoods) {
-                for (PlaceLikelihood placeLikelihood: placeLikelihoods) {
-                    if (placeLikelihood.getLikelihood() >= majorLikelihood) {
-                        majorLikelihood = placeLikelihood.getLikelihood();
-                        userPlace = placeLikelihood.getPlace();
-                        Log.d("User Place", userPlace.getAddress().toString());
-                    }
-                }
-                placeLikelihoods.release();
-                SendLocationDataTask task = new SendLocationDataTask();
-                task.execute(userPlace.getLatLng());
-            }
-        });*/
-    }
-
-    private class SendLocationDataTask extends AsyncTask<LatLng, Void, Void> {
-
-        @Override
-        protected Void doInBackground(LatLng... latLngs) {
-            UserService.sendUserLocation(token, latLngs[0], "", "");
-            return null;
-        }
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }

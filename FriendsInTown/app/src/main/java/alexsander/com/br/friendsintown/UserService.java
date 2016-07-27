@@ -31,7 +31,7 @@ public class UserService {
             URL_LOGIN_USER = BASE_URL + "loginemail/";
 
     private static final String
-            URL_SEND_LOCATION_USER = BASE_URL + "location/";
+            URL_LOCATION_USER = BASE_URL + "location/";
     private static final String
             URL_LIST_FRIENDS = BASE_URL + "listfriends/";
 
@@ -112,14 +112,27 @@ public class UserService {
         return false;
     }
 
-    public static boolean sendUserLocation(String token, LatLng latLng, String town, String country) {
-        HttpRequest request = HttpRequest.post(URL_SEND_LOCATION_USER + token + "/" + latLng.latitude +
-                                                "/" + latLng.longitude + "/" + town + "/" + country);
+    public static void sendUserLocation(String token, LatLng latLng, String address) {
+        HttpRequest request = HttpRequest.post(URL_LOCATION_USER + token + "/" + latLng.latitude +
+                                                "/" + latLng.longitude + "/" + address.replace(" ", "%20").replace("null", ""));
+        Log.d("sendUserLocation", request.body());
+    }
+
+    public static LatLng getUserLocation(String token) {
+        HttpRequest request = HttpRequest.get(URL_LOCATION_USER + token);
+        LatLng latLng = null;
         if (request.code() == 200) {
-            return true;
-        } else {
-            return false;
+            try {
+                JSONObject root = new JSONObject(request.body());
+                JSONObject user = root.getJSONObject("user");
+                JSONArray pos = user.getJSONArray("pos");
+                latLng = new LatLng(pos.getDouble(0), pos.getDouble(1));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
+        return latLng;
     }
 
     public static List<Friend> getListFriends(String token, LatLng userLocation) {
@@ -135,17 +148,18 @@ public class UserService {
                     JSONObject friendObject = friends.getJSONObject(i).getJSONObject("user");
                     String id = friendObject.getString("_id");
                     String name = friendObject.getString("n");
-                    //String location = friendObject.getString("city") + ", " + friendObject.getString("ct");
-                    /*if (friendObject.getJSONArray("pos") != null) {
-                        LatLng friendLatLng = new LatLng(friendObject.getJSONArray("pos").getDouble(0),
-                                friendObject.getJSONArray("pos").getDouble(1));
+                    String location = friendObject.getString("add");
+                    LatLng friendLatLng = new LatLng(friendObject.getJSONArray("pos").getDouble(0),
+                            friendObject.getJSONArray("pos").getDouble(1));
 
-                        if (userLocation != null) {
-                            Location.distanceBetween(userLocation.latitude, userLocation.longitude, friendLatLng.latitude, friendLatLng.longitude, distance);
-                        }
-                    }*/
+                    if (userLocation != null) {
+                        Location.distanceBetween(userLocation.latitude, userLocation.longitude, friendLatLng.latitude, friendLatLng.longitude, distance);
+                        Log.d("Distance", String.valueOf(distance[0]));
+                    }
 
                     Friend friend = new Friend(id, name, "", distance[0]);
+                    friend.setLocation(location);
+                    friend.setLatLng(friendLatLng);
                     friendsList.add(friend);
                 }
             } catch (JSONException e) {

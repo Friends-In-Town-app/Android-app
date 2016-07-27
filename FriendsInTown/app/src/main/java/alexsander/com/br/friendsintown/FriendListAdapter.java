@@ -39,7 +39,11 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendViewHolder>{
             holder.tvFriendLocation.setText(friend.getLocation());
         }
         if (friend.getDistance() > 0) {
-            holder.tvFriendDistance.setText(friend.getDistance() + "m");
+            if (friend.getDistance() > 1000) {
+                holder.tvFriendDistance.setText(String.format("%.2f km", friend.getDistance()/1000));
+            } else {
+                holder.tvFriendDistance.setText(friend.getDistance() + "m");
+            }
         }
 
         if (onFriendClickListener != null) {

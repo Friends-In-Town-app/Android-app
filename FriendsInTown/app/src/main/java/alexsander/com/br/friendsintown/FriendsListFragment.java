@@ -48,6 +48,7 @@ public class FriendsListFragment extends Fragment {
 
         @Override
         protected List<Friend> doInBackground(String... strings) {
+            userLocation = UserService.getUserLocation(strings[0]);
             return UserService.getListFriends(strings[0], userLocation);
         }
 
