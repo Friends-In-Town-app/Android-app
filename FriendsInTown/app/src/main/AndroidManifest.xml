@@ -2,16 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="alexsander.com.br.friendsintown">
 
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".FriendsInTownApplication"
+=======
+    <application
+>>>>>>> origin/master
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <service android:name=".LocationIntentService"
             android:exported="false"/>
         <meta-data
@@ -25,6 +30,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
+=======
+>>>>>>> origin/master
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ChooseLocationActivity" />
         <activity android:name=".FriendsInTownActivity"
@@ -60,6 +68,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+=======
+        <activity android:name=".CreateAccountActivity" />
+>>>>>>> origin/master
     </application>
 
 </manifest>

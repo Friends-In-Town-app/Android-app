@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+<<<<<<< HEAD
     android:background="@drawable/home_screen"
     android:gravity="center"
     android:orientation="vertical"
@@ -99,3 +100,78 @@
         android:paddingBottom="10dp" />
 
 </LinearLayout>
+=======
+    tools:context="alexsander.com.br.friendsintown.MainActivity"
+    android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+    android:background="@android:color/holo_blue_light">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends In Town"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            android:textColor="@color/abc_primary_text_material_light"
+            android:textAlignment="center"
+            android:textColorHighlight="@color/abc_background_cache_hint_selector_material_light"
+            android:textSize="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.39" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/edtEmail"
+            android:text="email"
+            android:layout_column="0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/edtPassword"
+            android:text="password"
+            android:layout_column="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:id="@+id/btnLogin"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:id="@+id/btnCreateAc"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="88dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect With Facebook"
+            android:id="@+id/btnConF"
+            android:nestedScrollingEnabled="false"
+            android:layout_alignBaseline="@+id/btnLogin"
+            android:layout_alignBottom="@+id/btnLogin"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</RelativeLayout>
+>>>>>>> origin/master
